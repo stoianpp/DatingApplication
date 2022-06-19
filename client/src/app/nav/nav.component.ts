@@ -1,5 +1,6 @@
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AccountService } from '../account.service';
 import { User } from '../models/user';
@@ -12,17 +13,14 @@ import { User } from '../models/user';
 export class NavComponent implements OnInit {
   model: any = {};
 
-  constructor(public accountService: AccountService) { }
+  constructor(public accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void { }
 
   login(): void {
-    console.log(this.model);
     this.accountService.login(this.model).subscribe(
       response => {
-        console.log(response);
-        this.model.username = '';
-        this.model.password = '';
+        this.router.navigateByUrl('/members');
       },
       error => {
         error =>console.log(error.error)
@@ -32,5 +30,6 @@ export class NavComponent implements OnInit {
 
   logout(): void {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
   }
 }
